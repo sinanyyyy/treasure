@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TREASURE | Discover More</title>
+<style>
+:root{
+ --blue:#69c8ff;--blue2:#dff4ff;--navy:#10283b;
+ --black:#101820;--white:#fff;--muted:#687989;
+ --bg:#f5faff;--line:#e1edf5;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth;scroll-padding-top:90px}
+body{font-family:Arial,Helvetica,sans-serif;background:var(--bg);color:var(--black)}
+button,input{font:inherit}
+button,a{cursor:pointer}
+a{text-decoration:none;color:inherit}
+button{transition:.2s}
+button:focus-visible,a:focus-visible,input:focus-visible{outline:3px solid #269fe9;outline-offset:3px}
+.announcement{background:var(--navy);color:white;text-align:center;padding:10px;font-size:12px;letter-spacing:.5px}
+.announcement b{color:var(--blue)}
+header{height:auto;min-height:78px;background:#fff;display:flex;align-items:center;justify-content:space-between;gap:20px;padding:16px 5%;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:10}
+.logo{font-size:26px;font-weight:900;letter-spacing:-1.5px;white-space:nowrap}
+.logo span{color:#289fe8}
+nav{display:flex;gap:22px;align-items:center}
+nav a{font-size:13px;font-weight:bold;color:#344454}
+nav a:hover{color:#168fd9}
+.header-actions{display:flex;align-items:center;gap:10px}
+.search{width:210px;border:1px solid var(--line);background:#f5faff;padding:12px 15px;border-radius:25px;outline:none}
+.cart-btn,.primary{background:var(--navy);color:white;border:0;padding:13px 18px;border-radius:25px;font-weight:bold}
+.cart-btn span{color:var(--blue)}
+.menu-toggle{display:none;background:#eaf7ff;border:0;padding:10px;border-radius:8px}
+.hero{margin:25px 4%;min-height:440px;border-radius:24px;overflow:hidden;background:linear-gradient(105deg,#dff4ff 0%,#c6eaff 55%,#80cefa 100%);display:grid;grid-template-columns:1fr 1fr;align-items:center;position:relative}
+.hero-text{padding:55px 8%;position:relative;z-index:1}
+.eyebrow{font-size:12px;font-weight:bold;letter-spacing:2px;color:#147fb8;margin-bottom:18px}
+.hero h1{font-size:clamp(40px,5.4vw,72px);line-height:1.04;letter-spacing:-3px;color:#10283b}
+.hero h1 span{color:#178dd2}
+.hero-text>p:not(.eyebrow){color:#405a6b;line-height:1.8;margin-top:20px;font-size:15px;max-width:420px}
+.primary{display:inline-block;margin-top:25px;padding:15px 24px;border-radius:30px;transition:.25s}
+.primary:hover{background:#168fd9;transform:translateY(-3px)}
+.hero-art{height:100%;min-height:390px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.hero-art img{width:100%;height:100%;position:absolute;inset:0;object-fit:cover;mix-blend-mode:multiply;opacity:.9}
+.hero-art .fallback{font-size:150px;z-index:1;filter:drop-shadow(0 20px 15px #294a5b30)}
+.hero-note{position:absolute;bottom:22px;right:22px;z-index:2;background:#fff;padding:14px 18px;border-radius:14px;font-size:12px;box-shadow:0 10px 30px #24475a20}
+.benefits{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding:5px 5% 35px}
+.benefit{background:white;border:1px solid var(--line);padding:19px;border-radius:13px;display:flex;gap:12px;align-items:center}
+.benefit .emoji{font-size:25px}
+.benefit strong{font-size:13px;display:block;margin-bottom:5px}
+.benefit small{font-size:11px;color:var(--muted)}
+.section{padding:40px 5%}
+.section-head{display:flex;justify-content:space-between;align-items:end;gap:15px;margin-bottom:24px}
+.section-head h2{font-size:clamp(24px,3vw,34px);letter-spacing:-1px}
+.section-head p{font-size:13px;color:var(--muted);margin-top:9px}
+.link{font-size:13px;font-weight:bold;color:#1389ce}
+.categories{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));gap:15px}
+.category{border:1px solid var(--line);background:white;border-radius:15px;text-align:center;padding:22px 8px;cursor:pointer;transition:.25s}
+.category:hover{background:var(--blue2);border-color:#80ccf5;transform:translateY(-5px)}
+.category .icon{width:66px;height:66px;margin:0 auto 13px;background:#e7f6ff;border-radius:50%;display:grid;place-items:center;font-size:31px}
+.category strong{font-size:13px;display:block}
+.category small{display:block;margin-top:7px;color:var(--muted);font-size:11px}
+.products-section{background:#eaf6ff;padding:45px 5%}
+.filters{display:flex;flex-wrap:wrap;gap:9px;margin-bottom:24px}
+.filter{background:white;border:1px solid #d7e8f4;padding:10px 17px;border-radius:24px;font-size:12px;font-weight:bold}
+.filter.active,.filter:hover{background:var(--navy);color:white;border-color:var(--navy)}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.product{background:white;border:1px solid #dcebf5;border-radius:16px;padding:10px;overflow:hidden;animation:rise .4s both;transition:transform .25s,box-shadow .25s}
+.product:hover{transform:translateY(-5px);box-shadow:0 15px 35px #12364b13}
+.product-image{height:210px;border-radius:11px;background:linear-gradient(145deg,#eaf7ff,#cfeeff);position:relative;overflow:hidden;display:grid;place-items:center}
+.product-image img{width:100%;height:100%;object-fit:cover;transition:transform .35s}
+.product:hover .product-image img{transform:scale(1.06)}
+.product-image .fallback{font-size:70px}
+.badge{position:absolute;left:10px;top:10px;background:#fff;border-radius:20px;padding:6px 9px;font-size:10px;font-weight:bold;color:#147fb8;z-index:1}
+.wish{position:absolute;right:10px;top:10px;width:32px;height:32px;border:0;border-radius:50%;background:white;font-size:17px;z-index:2}
+.wish.on{color:#e44b71}
+.product-info{padding:13px 5px 5px}
+.product-info small{color:#168fd9;font-size:10px;font-weight:bold;text-transform:uppercase;letter-spacing:1px}
+.product-info h3{font-size:15px;margin:8px 0}
+.stars{color:#e4a323;font-size:12px;margin-bottom:10px}
+.price{font-size:19px;font-weight:800}
+.old{font-size:12px;color:#8494a0;text-decoration:line-through;margin-left:7px;font-weight:normal}
+.add{width:100%;margin-top:14px;padding:12px;border-radius:9px;border:1px solid #b6e3fb;background:#e5f5ff;color:#10334b;font-weight:bold}
+.add:hover{background:var(--navy);color:white}
+.empty{padding:30px;background:white;border-radius:12px}
+.promo{margin:40px 5%;border-radius:22px;overflow:hidden;background:var(--navy);color:white;display:grid;grid-template-columns:1fr 1fr;align-items:center;min-height:290px}
+.promo-text{padding:40px}
+.promo h2{font-size:clamp(28px,4vw,46px);line-height:1.15}
+.promo h2 span{color:var(--blue)}
+.promo p{color:#d1e2ef;margin-top:14px;line-height:1.7;font-size:14px}
+.promo-art{height:100%;min-height:280px;display:grid;place-items:center;background:linear-gradient(135deg,#a4e0ff,#e7f7ff);font-size:100px}
+.promo .primary{background:var(--blue);color:#10283b}
+.story{display:grid;grid-template-columns:1fr 1fr;gap:35px;align-items:center}
+.story-visual{background:linear-gradient(140deg,#bde8ff,#e7f7ff);border-radius:20px;min-height:280px;display:grid;place-items:center;font-size:100px}
+.story p{line-height:1.9;color:var(--muted);margin-top:15px;font-size:14px}
+.stats{display:flex;gap:30px;flex-wrap:wrap;margin-top:25px}
+.stats strong{font-size:25px;display:block;color:#168fd9}
+.stats small{color:var(--muted);font-size:11px}
+.newsletter{margin:20px 5% 45px;background:#dff3ff;padding:40px 5%;border-radius:20px;text-align:center}
+.newsletter h2{font-size:30px}
+.newsletter p{color:#536c7e;font-size:14px;margin:12px 0 22px}
+.news-form{display:flex;max-width:450px;margin:auto;gap:8px}
+.news-form input{min-width:0;flex:1;padding:14px;border:1px solid #c3dfef;border-radius:25px;background:white}
+.news-form button{border:0;border-radius:25px;padding:0 20px;background:var(--navy);color:white;font-weight:bold}
+footer{background:#101e2a;color:white;padding:45px 5% 20px}
+.footer-grid{display:grid;grid-template-columns:2fr 1fr 1fr 1fr;gap:30px;padding-bottom:30px}
+footer p{color:#b5c7d5;font-size:12px;line-height:1.9;margin-top:13px}
+footer h3{font-size:14px;margin-bottom:15px}
+.footer-links{display:grid;gap:12px}
+.footer-links a{color:#b5c7d5;font-size:12px}
+.footer-links a:hover{color:var(--blue)}
+.copyright{border-top:1px solid #354655;padding-top:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,100px);opacity:0;background:var(--navy);color:white;padding:15px 22px;border-radius:30px;z-index:30;transition:.25s;font-size:13px;max-width:90%;text-align:center}
+.toast.show{transform:translate(-50%,0);opacity:1}
+.cart-panel{position:fixed;inset:0;background:#07172477;z-index:40;display:none;justify-content:flex-end}
+.cart-panel.open{display:flex}
+.cart-box{width:min(420px,100%);height:100%;background:white;color:var(--black);padding:25px;overflow:auto;animation:slide .25s}
+.cart-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:25px}
+.close{background:#eaf6ff;border:0;border-radius:50%;width:38px;height:38px;font-size:22px}
+.cart-row{display:flex;justify-content:space-between;gap:10px;padding:14px 0;border-bottom:1px solid var(--line);font-size:13px}
+.cart-row button{border:0;background:none;color:#d74d5c}
+.total{display:flex;justify-content:space-between;font-weight:bold;margin-top:25px;font-size:19px}
+.checkout{width:100%;margin-top:20px}
+@keyframes rise{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+@keyframes slide{from{transform:translateX(40px);opacity:.5}to{transform:translateX(0);opacity:1}}
+@media(max-width:1000px){
+ nav{gap:12px}
+ .search{width:150px}
+ .benefits{grid-template-columns:repeat(2,1fr)}
+ .categories{grid-template-columns:repeat(3,1fr)}
+ .grid{grid-template-columns:repeat(3,minmax(0,1fr))}
+ .product-image{height:180px}
+}
+@media(max-width:700px){
+ header{padding:14px 4%;flex-wrap:wrap}
+ .logo{font-size:23px}
+ .menu-toggle{display:block}
+ nav{display:none;width:100%;order:3;flex-direction:column;align-items:flex-start;padding:12px 0}
+ nav.open{display:flex}
+ .header-actions{margin-left:auto}
+ .search{width:125px}
+ .hero{margin:14px 3%;grid-template-columns:1fr;min-height:0}
+ .hero-text{padding:38px 7% 20px}
+ .hero h1{font-size:49px}
+ .hero-art{min-height:180px;height:180px}
+ .hero-art .fallback{font-size:95px}
+ .hero-note{bottom:12px;right:12px}
+ .benefits{padding:5px 4% 20px;gap:9px}
+ .benefit{padding:12px 9px;gap:8px}
+ .benefit .emoji{font-size:21px}
+ .benefit strong{font-size:11px}
+ .benefit small{font-size:10px}
+ .section{padding:30px 4%}
+ .categories{grid-template-columns:repeat(3,minmax(0,1fr));gap:9px}
+ .category{padding:16px 5px}
+ .category .icon{width:48px;height:48px;font-size:24px}
+ .category strong{font-size:11px}
+ .category small{font-size:10px}
+ .products-section{padding:30px 4%}
+ .grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+ .product-image{height:155px}
+ .product-info h3{font-size:13px}
+ .price{font-size:17px}
+ .promo{margin:25px 4%;grid-template-columns:1fr}
+ .promo-text{padding:28px}
+ .promo-art{min-height:150px;font-size:75px}
+ .story{grid-template-columns:1fr;gap:20px}
+ .story-visual{min-height:190px}
+ .newsletter{margin:15px 4% 30px;padding:30px 15px}
+ .newsletter h2{font-size:24px}
+ .footer-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:390px){
+ .search{width:105px;padding:10px;font-size:12px}
+ .cart-btn{padding:11px}
+ .hero h1{font-size:42px}
+ .product-image{height:125px}
+ .old{display:block;margin:5px 0 0}
+}
+</style>
+</head>
+<body>
+
+<div class="announcement">WELCOME OFFER · <b>Discover something new today</b> · Shop your favourites</div>
+
+<header>
+<a href="#home" class="logo">T<span>REASURE</span></a>
+<button class="menu-toggle" id="menuToggle" aria-label="Open navigation">☰</button>
+<nav id="nav">
+<a href="#home">Home</a><a href="#categories">Categories</a>
+<a href="#shop">Shop</a><a href="#about">About Us</a><a href="#contact">Contact</a>
+</nav>
+<div class="header-actions">
+<input class="search" id="search" type="search" placeholder="Search products..." aria-label="Search products">
+<button class="cart-btn" id="openCart">Cart <span id="count">0</span></button>
+</div>
+</header>
+
+<section class="hero" id="home">
+<div class="hero-text">
+<p class="eyebrow">THE EVERYDAY COLLECTION</p>
+<h1>Find Your<br>Next <span>Favourite.</span></h1>
+<p>Explore a world of fashion, accessories and everyday essentials, all in one place.</p>
+<a class="primary" href="#shop">Explore Products ↗</a>
+</div>
+<div class="hero-art">
+<img src="https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=900&q=85" alt="Modern fashion store" onerror="this.style.display='none'">
+<div class="hero-note">✦ Your next favourite awaits</div>
+</div>
+</section>
+
+<div class="benefits">
+<div class="benefit"><span class="emoji">🚚</span><div><strong>Easy Shopping</strong><small>Browse your favourites</small></div></div>
+<div class="benefit"><span class="emoji">💎</span><div><strong>Curated Products</strong><small>Explore more choices</small></div></div>
+<div class="benefit"><span class="emoji">🔒</span><div><strong>Safe Browsing</strong><small>Simple shopping experience</small></div></div>
+<div class="benefit"><span class="emoji">💬</span><div><strong>Customer Support</strong><small>We're here to help</small></div></div>
+</div>
+
+<section class="section" id="categories">
+<div class="section-head"><div><h2>Shop by Category</h2><p>Explore the collections made for you.</p></div><a class="link" href="#shop">View products →</a></div>
+<div class="categories">
+<div class="category" data-category="Fashion"><div class="icon">👕</div><strong>Fashion</strong><small>Everyday style</small></div>
+<div class="category" data-category="Shoes"><div class="icon">👟</div><strong>Shoes</strong><small>Step forward</small></div>
+<div class="category" data-category="Electronics"><div class="icon">🎧</div><strong>Electronics</strong><small>Smart essentials</small></div>
+<div class="category" data-category="Accessories"><div class="icon">🎒</div><strong>Accessories</strong><small>Finishing touches</small></div>
+<div class="category" data-category="Home"><div class="icon">🏠</div><strong>Home & Living</strong><small>Comfort at home</small></div>
+<div class="category" data-category="Beauty"><div class="icon">✨</div><strong>Beauty</strong><small>Everyday care</small></div>
+</div>
+</section>
+
+<section class="products-section" id="shop">
+<div class="section-head"><div><p class="eyebrow">THE TREASURE EDIT</p><h2>Explore Our Products</h2><p>Discover something you'll love.</p></div><span class="link" id="resultCount">12 Products</span></div>
+<div class="filters">
+<button class="filter active" data-filter="All">All Products</button>
+<button class="filter" data-filter="Fashion">Fashion</button>
+<button class="filter" data-filter="Shoes">Shoes</button>
+<button class="filter" data-filter="Electronics">Electronics</button>
+<button class="filter" data-filter="Accessories">Accessories</button>
+<button class="filter" data-filter="Home">Home & Living</button>
+<button class="filter" data-filter="Beauty">Beauty</button>
+</div>
+<div class="grid" id="productGrid"></div>
+</section>
+
+<section class="promo">
+<div class="promo-text">
+<p class="eyebrow">A LITTLE SOMETHING EXTRA</p>
+<h2>Good Finds.<br><span>Great Feelings.</span></h2>
+<p>Explore a growing collection of products for your everyday life.</p>
+<a class="primary" href="#shop">Find Your Favourite →</a>
+</div>
+<div class="promo-art">🛍️ ✨</div>
+</section>
+
+<section class="section" id="about">
+<div class="story">
+<div class="story-visual">💙 🛍️</div>
+<div>
+<p class="eyebrow">WELCOME TO TREASURE</p>
+<h2>A Better Way to Discover.</h2>
+<p>TREASURE is a shopping website concept designed to make browsing simple and enjoyable. Explore different categories, discover new products and add your favourites to your cart.</p>
+<div class="stats">
+<div><strong>6+</strong><small>Categories</small></div>
+<div><strong>12</strong><small>Sample products</small></div>
+<div><strong>1</strong><small>Place to explore</small></div>
+</div>
+<a href="#shop" class="primary">Start Exploring →</a>
+</div>
+</div>
+</section>
+
+<section class="newsletter">
+<h2>Stay in the Loop.</h2>
+<p>Subscribe to our demo newsletter for a little shopping inspiration.</p>
+<form class="news-form" id="newsForm">
+<input type="email" id="email" placeholder="Enter your email address" required>
+<button type="submit">Subscribe →</button>
+</form>
+</section>
+
+<footer id="contact">
+<div class="footer-grid">
+<div><a class="logo" href="#home">T<span>REASURE</span></a><p>A modern shopping website concept with a fresh light-blue look. Discover, explore and find your favourites.</p></div>
+<div><h3>Explore</h3><div class="footer-links"><a href="#home">Home</a><a href="#categories">Categories</a><a href="#shop">All Products</a></div></div>
+<div><h3>Collections</h3><div class="footer-links"><a href="#shop">Fashion</a><a href="#shop">Electronics</a><a href="#shop">Accessories</a></div></div>
+<div><h3>Information</h3><div class="footer-links"><a href="#about">About Us</a><a href="#contact">Contact</a><a href="#home">Back to Top ↑</a></div></div>
+</div>
+<div class="copyright"><p>© 2026 TREASURE Store. Demo website.</p><p>Designed with 💙</p></div>
+</footer>
+
+<div class="toast" id="toast" role="status"></div>
+
+<div class="cart-panel" id="cartPanel" role="dialog" aria-modal="true" aria-label="Shopping cart">
+<div class="cart-box">
+<div class="cart-head"><h2>Your Shopping Cart</h2><button class="close" id="closeCart" aria-label="Close cart">×</button></div>
+<div id="cartItems"></div>
+<div class="total"><span>Total</span><span id="total">₹0</span></div>
+<button class="primary checkout" id="checkout">Continue Shopping</button>
+<p style="font-size:12px;color:#687989;margin-top:12px">Demo cart only. Online checkout is not connected.</p>
+</div>
+</div>
+
+<script>
+const items=[
+{id:1,name:"Classic Hoodie",cat:"Fashion",price:899,old:1299,icon:"👕",image:"photo-1556821840-3a63f95609a7",badge:"Popular"},
+{id:2,name:"Summer Dress",cat:"Fashion",price:1199,old:1599,icon:"👗",image:"photo-1595777457583-95e059d581b8",badge:"Trending"},
+{id:3,name:"Everyday Sneakers",cat:"Shoes",price:1499,old:1999,icon:"👟",image:"photo-1542291026-7eec264c27ff",badge:"Bestseller"},
+{id:4,name:"Smart Watch",cat:"Electronics",price:1999,old:2499,icon:"⌚",image:"photo-1523275335684-37898b6baf30",badge:"Popular"},
+{id:5,name:"Travel Backpack",cat:"Accessories",price:799,old:1099,icon:"🎒",image:"photo-1553062407-98eeb64c6a62",badge:"New"},
+{id:6,name:"Wireless Headphones",cat:"Electronics",price:1599,old:2199,icon:"🎧",image:"photo-1505740420928-5e560c06d30e",badge:"Trending"},
+{id:7,name:"Classic Sunglasses",cat:"Accessories",price:499,old:799,icon:"🕶️",image:"photo-1511499767150-a48a237f0083",badge:"New"},
+{id:8,name:"Casual T-Shirt",cat:"Fashion",price:399,old:599,icon:"👕",image:"photo-1521572163474-6864f9cf17ab",badge:"Popular"},
+{id:9,name:"Table Lamp",cat:"Home",price:999,old:1399,icon:"💡",image:"photo-1507473885765-e6ed057f782c",badge:"Home"},
+{id:10,name:"Comfort Cushion",cat:"Home",price:599,old:899,icon:"🛋️",image:"photo-1584100936595-c0654b55a2e2",badge:"Comfort"},
+{id:11,name:"Daily Skincare",cat:"Beauty",price:699,old:999,icon:"🧴",image:"photo-1608248543803-ba4f8c70ae0b",badge:"Care"},
+{id:12,name:"Running Shoes",cat:"Shoes",price:1799,old:2299,icon:"👟",image:"photo-1542291026-7eec264c27ff",badge:"Active"}
+];
+
+let category="All";
+let cart=[];
+let wishlist=new Set();
+const grid=document.getElementById("productGrid");
+const search=document.getElementById("search");
+const money=n=>"₹"+n.toLocaleString("en-IN");
+let toastTimer;
+
+function notify(message){
+ const t=document.getElementById("toast");
+ t.textContent=message;
+ t.classList.add("show");
+ clearTimeout(toastTimer);
+ toastTimer=setTimeout(()=>t.classList.remove("show"),2200);
+}
+
+function render(){
+ const q=search.value.trim().toLowerCase();
+ const list=items.filter(p=>
+ (category==="All"||p.cat===category)&&
+ (p.name.toLowerCase().includes(q)||p.cat.toLowerCase().includes(q))
+ );
+ document.getElementById("resultCount").textContent=list.length+" Products";
+ grid.innerHTML="";
+ if(!list.length){
+  grid.innerHTML='<div class="empty">No products found. Try another search.</div>';
+  return;
+ }
+ list.forEach(p=>{
+  const card=document.createElement("article");
+  card.className="product";
+  const imageURL="https://images.unsplash.com/"+p.image+"?auto=format&fit=crop&w=500&q=75";
+  card.innerHTML=`
+  <div class="product-image">
+   <span class="badge">${p.badge}</span>
+   <button class="wish ${wishlist.has(p.id)?"on":""}" aria-label="Add ${p.name} to wishlist">${wishlist.has(p.id)?"♥":"♡"}</button>
+   <img src="${imageURL}" alt="${p.name}" loading="lazy">
+  </div>
+  <div class="product-info">
+   <small>${p.cat}</small>
+   <h3>${p.name}</h3>
+   <div class="stars">★★★★★ <span style="color:#81909c">(4.8)</span></div>
+   <div class="price">${money(p.price)} <span class="old">${money(p.old)}</span></div>
+   <button class="add">Add to Cart +</button>
+  </div>`;
+  const img=card.querySelector("img");
+  img.addEventListener("error",()=>{
+   img.remove();
+   const fallback=document.createElement("div");
+   fallback.className="fallback";
+   fallback.textContent=p.icon;
+   card.querySelector(".product-image").appendChild(fallback);
+  });
+  card.querySelector(".wish").addEventListener("click",()=>{
+   if(wishlist.has(p.id))wishlist.delete(p.id);
+   else wishlist.add(p.id);
+   render();
+   notify(wishlist.has(p.id)?"Added to wishlist":"Removed from wishlist");
+  });
+  card.querySelector(".add").addEventListener("click",()=>addToCart(p.id));
+  grid.appendChild(card);
+ });
+}
+
+function setCategory(cat){
+ category=cat;
+ document.querySelectorAll(".filter").forEach(b=>b.classList.toggle("active",b.dataset.filter===cat));
+ render();
+ document.getElementById("shop").scrollIntoView({behavior:"smooth"});
+}
+document.querySelectorAll(".filter").forEach(b=>b.addEventListener("click",()=>setCategory(b.dataset.filter)));
+document.querySelectorAll(".category").forEach(el=>el.addEventListener("click",()=>setCategory(el.dataset.category)));
+search.addEventListener("input",render);
+
+function addToCart(id){
+ cart.push(items.find(p=>p.id===id));
+ updateCart();
+ notify("Added to your cart!");
+}
+function updateCart(){
+ document.getElementById("count").textContent=cart.length;
+ const container=document.getElementById("cartItems");
+ container.innerHTML="";
+ if(!cart.length){
+  container.textContent="Your cart is empty. Explore our products!";
+ }else{
+  cart.forEach((p,i)=>{
+   const row=document.createElement("div");
+   row.className="cart-row";
+   const name=document.createElement("span");
+   name.textContent=p.name+" — "+money(p.price);
+   const remove=document.createElement("button");
+   remove.textContent="Remove";
+   remove.addEventListener("click",()=>{cart.splice(i,1);updateCart()});
+   row.append(name,remove);
+   container.appendChild(row);
+  });
+ }
+ document.getElementById("total").textContent=money(cart.reduce((s,p)=>s+p.price,0));
+}
+function openCart(){document.getElementById("cartPanel").classList.add("open")}
+function closeCart(){document.getElementById("cartPanel").classList.remove("open")}
+document.getElementById("openCart").addEventListener("click",openCart);
+document.getElementById("closeCart").addEventListener("click",closeCart);
+document.getElementById("checkout").addEventListener("click",closeCart);
+document.getElementById("cartPanel").addEventListener("click",e=>{if(e.target.id==="cartPanel")closeCart()});
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeCart()});
+
+document.getElementById("menuToggle").addEventListener("click",()=>{
+ document.getElementById("nav").classList.toggle("open");
+});
+document.querySelectorAll("#nav a").forEach(a=>a.addEventListener("click",()=>{
+ document.getElementById("nav").classList.remove("open");
+}));
+
+document.getElementById("newsForm").addEventListener("submit",e=>{
+ e.preventDefault();
+ notify("Thanks for your interest! This demo doesn't save subscriptions.");
+ e.target.reset();
+});
+
+render();
+updateCart();
+</script>
+</body>
+</html>
